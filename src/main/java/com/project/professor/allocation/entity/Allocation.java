@@ -20,8 +20,20 @@ public class Allocation {
     @Temporal(TemporalType.TIME)
     @Column(nullable = false)
     private Date end;
+
+    @Column(name = "Course.id", nullable = false)
     private Long courseId;
+
+    @Column(name = "professor.id", nullable = false)
     private Long professorId;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "professor.id", nullable = false, insertable = false, updatable = false)
+    private Professor professor;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "Course.id", nullable = false, insertable = false, updatable = false)
+    private Course course;
 
     public Long getId() {
         return id;
@@ -71,4 +83,19 @@ public class Allocation {
         this.professorId = professorId;
     }
 
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }
