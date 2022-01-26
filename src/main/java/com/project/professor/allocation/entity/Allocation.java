@@ -98,4 +98,20 @@ public class Allocation {
     public void setCourse(Course course) {
         this.course = course;
     }
+
+    @Override
+    public String toString() {
+        return "Allocation{" +
+                "id=" + id +
+                ", day=" + day +
+                ", start=" + start +
+                ", end=" + end +
+                ", courseId=" + courseId +
+                ", professorId=" + professorId +
+                ", professor=" + professor +
+                ", course=" + course +
+                '}';
+    }
 }
+
+
