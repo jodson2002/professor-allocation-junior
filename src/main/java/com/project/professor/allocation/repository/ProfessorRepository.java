@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
-  List<Professor> findByNameContainingon(String partName);
+  List<Professor> findByNameContaining(String partName);
 
   List<Professor> findByDepartmentId(Long departmentId);
 }
