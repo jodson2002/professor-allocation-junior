@@ -1,4 +1,4 @@
-package com.project.professor.allocation;
+package com.project.professor.allocation.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

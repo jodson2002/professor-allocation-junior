@@ -10,5 +10,6 @@ public class  ProfessorAllocationApplication {
 		SpringApplication.run(ProfessorAllocationApplication.class, args);
 	}
 
+
 }
 //kakakakakakakakakak

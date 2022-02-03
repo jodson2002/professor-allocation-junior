@@ -1,7 +1,8 @@
-package com.project.professor.allocation;
+package com.project.professor.allocation.repository;
 
-import com.project.professor.allocation.entity.Professor;
-import com.project.professor.allocation.repository.ProfessorRepository;
+
+import com.project.professor.allocation.entity.Course;
+import com.project.professor.allocation.repository.CourseRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,15 +17,17 @@ import java.util.List;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 @TestPropertySource(locations = "classpath:application.properties")
-public class ProfessorRepositoryTest {
+public class CourseRepositoryTest{
 
     @Autowired
-    public ProfessorRepository ProfessorRepository;
+    public CourseRepository CourseRepository;
 
     @Test
-    public void FindAll() {
+    public void FindAll(){
 
-        List<Professor> Department = ProfessorRepository.findAll();
-        System.out.println();
+        List<Course> Course = CourseRepository.findAll();
+        System.out.println(Course);
     }
+
 }
+
