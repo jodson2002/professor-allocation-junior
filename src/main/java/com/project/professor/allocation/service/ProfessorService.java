@@ -1,9 +1,6 @@
 package com.project.professor.allocation.service;
 
-
-
-import com.project.professor.allocation.entity.Allocation;
-import com.project.professor.allocation.entity.Course;
+import com.project.professor.allocation.entity.Department;
 import com.project.professor.allocation.entity.Professor;
 import com.project.professor.allocation.repository.ProfessorRepository;
 import org.springframework.stereotype.Service;
@@ -14,88 +11,63 @@ import java.util.Optional;
 @Service
 public class ProfessorService {
 
-    private ProfessorRepository professorRepository;
+    private final ProfessorRepository professorRepository;
+    private final DepartmentService departmentService;
 
-    public ProfessorService(com.project.professor.allocation.repository.ProfessorRepository professorRepository) {
+    public ProfessorService(ProfessorRepository professorRepository,
+                            DepartmentService departmentService) {
         this.professorRepository = professorRepository;
+        this.departmentService = departmentService;
     }
 
-    public Professor findById(Long Id){
-
-        Optional<Professor> professorOptional = professorRepository.findById(Id);
-        Professor professor = professorOptional.orElse(null);
-        return professor;
-
+    public Professor findById(Long id) {
+        if (id != null) {
+            Optional<Professor> professorOptional = professorRepository.findById(id);
+            Professor professor = professorOptional.orElse(null);
+            return professor;
+        } else {
+            return null;
+        }
     }
-    public Professor create(Professor professor)
-    {
+
+    public List<Professor> findAll() {
+        List<Professor> professors = professorRepository.findAll();
+        return professors;
+    }
+
+    public Professor create(Professor professor) {
         professor.setId(null);
         Professor professorNew = saveInternal(professor);
         return professorNew;
     }
 
-    public Professor update(Professor professor)
-    {
+    public Professor update(Professor professor) {
         Long id = professor.getId();
 
-        if (id != null && professorRepository.existsById(id))
-        {
+        if (id != null && professorRepository.existsById(id)) {
             Professor professorNew = saveInternal(professor);
             return professorNew;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    public void deleteById(Long id)
-    {
-        if (id != null && professorRepository.existsById(id))
-        {
+    public void deleteById(Long id) {
+        if (id != null && professorRepository.existsById(id)) {
             professorRepository.deleteById(id);
         }
     }
 
-    public void deleteAll()
-    {
+    public void deleteAll() {
         professorRepository.deleteAll();
     }
-    private Allocation saveInternal(Allocation allocation) {
-        if (hasCollision(allocation)) {
-            throw new RuntimeException();
-        } else {
-            allocation = allocationRepository.save(allocation);
 
-            Professor professor = professorService.findById(allocation.getProfessorId());
-            allocation.setProfessor(professor);
+    private Professor saveInternal(Professor professor) {
+        Professor professor1 = professorRepository.save(professor);
 
-            Course course = courseService.findById(allocation.getCourseId());
-            allocation.setCourse(course);
+        Department department = departmentService.findById(professor.getDepartmentId());
+        professor1.setDepartment(department);
 
-            return allocation;
-        }
-    }
-    boolean hasCollision(Allocation newAllocation) {
-        boolean hasCollision = false;
-
-        List<Allocation> currentAllocations = allocationRepository.findByProfessorId(newAllocation.getProfessorId());
-
-        for (Allocation currentAllocation : currentAllocations) {
-            hasCollision = hasCollision(currentAllocation, newAllocation);
-            if (hasCollision) {
-                break;
-            }
-        }
-
-        return hasCollision;
-    }
-
-    private boolean hasCollision(Allocation currentAllocation, Allocation newAllocation) {
-        return !currentAllocation.getId().equals(newAllocation.getId())
-                && currentAllocation.getDay() == newAllocation.getDay()
-                && currentAllocation.getStart().compareTo(newAllocation.getEnd()) < 0
-                && newAllocation.getStart().compareTo(currentAllocation.getEnd()) < 0;
+        return professor1;
     }
 }
-
